@@ -1,6 +1,10 @@
 {
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
     "files.associations": {
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "executor": "cpp",
+        "io_context": "cpp",
+        "iostream": "cpp",
+        "xiosbase": "cpp"
     }
 }

@@ -3,17 +3,28 @@
 #include <iostream>
 
 class timer
-{
-public:
-    timer(){
-        start = std::chrono::high_resolution_clock::now();
-    }
-    ~timer(){
-        end = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> elapsed = end - start;
-        std::cout << "Elapsed time: " << elapsed.count() << " seconds\n";
-    }
+    {
+    public:
+        timer()
+        {
+            reset();
+        }
 
-private:
-    std::chrono::_V2::system_clock::time_point start, end;
-};
+        void reset()
+        {
+            m_Start = std::chrono::high_resolution_clock::now();
+        }
+
+        float elapsed()
+        {
+            return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - m_Start).count() * 0.001f * 0.001f * 0.001f;
+        }
+
+        float elapsed_millis()
+        {
+            return elapsed() * 1000.0f;
+        }
+
+    private:
+        std::chrono::time_point<std::chrono::high_resolution_clock> m_Start;
+    };
