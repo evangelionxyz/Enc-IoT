@@ -1,12 +1,28 @@
-#include "openssl/aes.h"
-#include "openssl/evp.h"
-
-#include "timer.hpp"
 #include <ctime>
 #include <fstream>
 #include <sstream>
 #include <cstring>
 #include <vector>
+#include <chrono>
+#include <iostream>
+
+#include "openssl/aes.h"
+#include "openssl/evp.h"
+
+class timer
+{
+public:
+    timer() { start = std::chrono::high_resolution_clock::now(); }
+    ~timer() {}
+    float elapsed_millis()
+    {
+        auto end = std::chrono::high_resolution_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+        return static_cast<float>(elapsed);
+    }
+private:
+    std::chrono::high_resolution_clock::time_point start;
+};
 
 int main(int argc, char **argv) {
     
