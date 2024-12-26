@@ -264,7 +264,7 @@ void ecc_test(const std::string &data, std::stringstream &logging_stream, size_t
 
 int main(int argc, char **argv) {
     std::stringstream logging_stream;
-    std::string filename = "text_1MB.txt";
+    std::string filename = "text_1KB.txt";
     std::stringstream ss;
     std::string data;
 
@@ -282,21 +282,34 @@ int main(int argc, char **argv) {
 
     logging_stream << "AES Encryption Benchmark " << filename << '\n';
     aes_test(data, logging_stream, 100);
+    aes_test(data, logging_stream, 500);
     aes_test(data, logging_stream, 1000);
+    aes_test(data, logging_stream, 1000 * 2);
+    aes_test(data, logging_stream, 1000 * 5);
     aes_test(data, logging_stream, 1000 * 10);
+    aes_test(data, logging_stream, 1000 * 20);
 
     logging_stream << "RSA Encryption Benchmark " << filename << '\n';
     rsa_test(data, logging_stream, 100);
+    rsa_test(data, logging_stream, 500);
     rsa_test(data, logging_stream, 1000);
+    rsa_test(data, logging_stream, 1000 * 2);
+    rsa_test(data, logging_stream, 1000 * 5);
     rsa_test(data, logging_stream, 1000 * 10);
+    rsa_test(data, logging_stream, 1000 * 20);
 
     logging_stream << "ECC Encryption Benchmark " << filename << '\n';
+
     ecc_test(data, logging_stream, 100);
+    ecc_test(data, logging_stream, 500);
     ecc_test(data, logging_stream, 1000);
+    ecc_test(data, logging_stream, 1000 * 2);
+    ecc_test(data, logging_stream, 1000 * 5);
     ecc_test(data, logging_stream, 1000 * 10);
+    ecc_test(data, logging_stream, 1000 * 20);
 
     std::cout << logging_stream.str();
-    std::ofstream log_file("log_file_1MB.txt"); // append to the last line
+    std::ofstream log_file("log_file_1KB_2.txt"); // append to the last line
     if (log_file.is_open())
     {
         log_file << logging_stream.rdbuf();
