@@ -46,23 +46,19 @@ void aes_test(const std::string &data, std::stringstream &logging_stream, size_t
 {
     logging_stream << iterations << "Iterations\n";
     timer scoped_timer;
-
     // AES key setup
     unsigned char aes_key[16]    = "K7vnU6GKyl8pU";
     AES_KEY aes_encryption_key, aes_decryption_key;
     AES_set_encrypt_key(aes_key, 128, &aes_encryption_key);
     AES_set_decrypt_key(aes_key, 128, &aes_decryption_key);
-
     // pad the input data to a multiple 16 bytes (AES block size)
     size_t data_size = data.size();
     size_t padded_size = ((data_size + AES_BLOCK_SIZE - 1) / AES_BLOCK_SIZE) * AES_BLOCK_SIZE;
     std::string padded_data = data;
     padded_data.resize(padded_size, '\0');
-
     // allocate memory for the encrypted and decrypted outputs
     VecUChar encrypted_data(padded_size);
     VecUChar decrypted_data(padded_size);
-
     {
         timer t;
         for (size_t i = 0; i < iterations; ++i)
@@ -75,7 +71,6 @@ void aes_test(const std::string &data, std::stringstream &logging_stream, size_t
         float elapsed = t.elapsed_ms();
         logging_stream << "Encryption elapsed time: " << elapsed << " ms, " << elapsed * 0.001f << " s\n";
     }
-
     {
         timer decryption_timer;
         for (size_t i = 0; i < iterations; ++i)
@@ -168,12 +163,10 @@ void rsa_test(const std::string &data, std::stringstream &logging_stream, size_t
         ERR_print_errors_fp(stderr);
         return;
     }
-
     size_t chunk_size = RSA_size(rsa_keypair) - 42; // maximum data size for RSA_PKCS1_OAEP_PADDING
     size_t total_chunks = (data.size() + chunk_size - 1) / chunk_size;
     VecUChar encrypted_data(RSA_size(rsa_keypair) * total_chunks);
     VecUChar decrypted_data(data.size());
-
     {
         timer t;
         for (size_t i = 0; i < iterations; ++i)
@@ -198,7 +191,6 @@ void rsa_test(const std::string &data, std::stringstream &logging_stream, size_t
         float elapsed = t.elapsed_ms();
         logging_stream << "Encryption elapsed time: " << elapsed << " ms, " << elapsed * 0.001f << " s\n";
     }
-
     {
         timer decryption_timer;
         for (size_t i = 0; i < iterations; ++i)
@@ -537,6 +529,26 @@ int main(int argc, char **argv) {
         return -1;
     }
 
+#if 1
+    logging_stream << "AES Encryption Benchmark " << filename << '\n';
+    aes_test(data, logging_stream, 100);
+    aes_test(data, logging_stream, 500);
+    aes_test(data, logging_stream, 1000);
+    aes_test(data, logging_stream, 1000 * 2);
+
+    logging_stream << "RSA Encryption Benchmark " << filename << '\n';
+    rsa_test(data, logging_stream, 100);
+    rsa_test(data, logging_stream, 500);
+    rsa_test(data, logging_stream, 1000);
+    rsa_test(data, logging_stream, 1000 * 2);
+
+    logging_stream << "ECC Encryption Benchmark " << filename << '\n';
+
+    ecc_test(data, logging_stream, 100);
+    ecc_test(data, logging_stream, 500);
+    ecc_test(data, logging_stream, 1000);
+    ecc_test(data, logging_stream, 1000 * 2);
+#else
     logging_stream << "AES Encryption Recursive Benchmark " << filename << '\n';
     aes_recursive_test(data, logging_stream, 100);
     aes_recursive_test(data, logging_stream, 500);
@@ -552,6 +564,7 @@ int main(int argc, char **argv) {
     ecc_recursive_test(data, logging_stream, 100);
     ecc_recursive_test(data, logging_stream, 500);
     ecc_recursive_test(data, logging_stream, 1000);
+#endif
 
     std::cout << logging_stream.str();
     std::ofstream log_file("log_file_1KB.txt"); // append to the last line
