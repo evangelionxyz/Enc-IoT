@@ -9,3 +9,4 @@ set(OPENSSL_LIB_DIR "${THIRDPARTY}/openssl/x64/lib")
 set(OPENSSL_DLL_DIR "${THIRDPARTY}/openssl/x64/bin")
 
 add_subdirectory(src/)
+add_subdirectory(utils/)

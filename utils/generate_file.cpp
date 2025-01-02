@@ -39,7 +39,7 @@ int main(int argc, char **argv)
     //generate_binary_file("binary_10MB.bin", 1024 * 1024 * 10);
     //generate_binary_file("binary_1GB.bin", 1024 * 1024 * 1024);
 
-    //generate_text_file("text_1KB.txt", 1024);
+    generate_text_file("text_1KB.txt", 1024);
     //generate_text_file("text_1MB.txt", 1024 * 1024);
     //generate_text_file("text_10MB.txt", 1024 * 1024 * 10);
     //generate_text_file("text_1GB.txt", 1024 * 1024 * 1024);
